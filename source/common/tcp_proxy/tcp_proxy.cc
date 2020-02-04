@@ -116,9 +116,7 @@ Config::Config(const envoy::extensions::filters::network::tcp_proxy::v3::TcpProx
       random_generator_(context.random()) {
 
   upstream_drain_manager_slot_->set([](Event::Dispatcher&) {
-    ThreadLocal::ThreadLocalObjectSharedPtr drain_manager =
-        std::make_shared<UpstreamDrainManager>();
-    return drain_manager;
+    return ThreadLocal::ThreadLocalObjectSharedPtr(new UpstreamDrainManager());
   });
 
   if (config.has_hidden_envoy_deprecated_deprecated_v1()) {
